@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Grafos</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script type="text/javascript" src="Nodo.js"></script>
+	<script type="text/javascript" src="Grafo.js"></script>
+	<script type="text/javascript" src="Almacenamiento.js"></script>
+</head>
+<body>
+
+	<section class="content-opciones">
+		<li id="btn-agregar">Agregar</li>
+		<li id="btn-enlazar">Enlazar</li>
+		<li id="btn-eliminar">Eliminar</li>
+		<li id="btn-descargar">Descargar</li>
+		<li class="btn-descargar">
+			<span>
+				<input type="file" class="file" id="file">
+			</span>
+		</li>
+		<li id="btn-cargar">Cargar</li>
+	</section>
+
+	<fieldset class="content-area" id="content-area"></fieldset>
+
+	<section class="content-asociacion" id="content-asociacion">
+		<button class='btn' id="btn-eliminar-nodo" style="display: none;"></button>
+		<label>
+			<input type="text" class="caja" id="asociacion" placeholder="Asociación">
+		</label>
+	</section>
+
+	<section class="content-datos" id="content-datos"></section>
+
+	<section class="content-modal" id="content-modal" style="display: none;" onclick="modal(content_modal)">
+		<div class="content-option" onclick="modal(content_modal)">
+			<input type="text" class="caja" id="caja-valor" placeholder="Valor (separado por comas)">
+			<input type="number" class="caja" id="caja-peso" placeholder="Peso" value="0">
+			<label class="caja-check" id="caja-check">Bidireccional <input type="checkbox" id="caja-bidireccional"></label>
+			<button class="btn" id="btn-aceptar">Aceptar</button>
+		</div>
+	</section>
+
+	<section class=""></section>
+
+	<table class="tabla" id="tabla"></table>
+
+	<script type="text/javascript" src="App.js"></script>
+
+</body>
+</html>
