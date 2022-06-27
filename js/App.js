@@ -1,7 +1,9 @@
 var content_modal=document.getElementById('content-modal');
 var content_area=document.getElementById('content-area');
 var content_datos=document.getElementById('content-datos');
+var content_camino=document.getElementById('content-camino');
 var btn_agregar=document.getElementById('btn-agregar');
+var btn_camino=document.getElementById('btn-camino');
 var btn_enlazar=document.getElementById('btn-enlazar');
 var valor=document.getElementById('caja-valor');
 var peso=document.getElementById('caja-peso');
@@ -33,11 +35,12 @@ var tam_matriz=0;
 	this.nodos_sele[1]=null;
 });*/
 document.addEventListener("DOMContentLoaded",()=>{
+	this.eliminar();
 	this.texto_file=Almacenamiento.obtener();
 	if(this.texto_file!=null){
 		this.cargar();
 	}
-	this.eliminar();
+	this.deseleccionar();
 });
 btn_descargar.addEventListener("click",()=>{
 	let elemento=document.createElement("a");
@@ -61,7 +64,7 @@ btn_eliminar.addEventListener("click",()=>{
 	this.eliminar();
 });
 btn_eliminar_nodo.addEventListener("click",()=>{
-	this.grafo.eliminarNodo(this.nodo_sele.valor);
+	this.grafo.eliminarNodo(this.nodo_sele);
 	Almacenamiento.guardar(this.grafo);
 	window.location.reload();
 });
@@ -76,6 +79,18 @@ btn_agregar.addEventListener("click",()=>{
 	this.deseleccionar();
 	this.opcion=0;
 	this.pedirDato();
+});
+btn_camino.addEventListener(("click"),()=>{
+	if(this.nodos_sele[0]!=null && this.nodos_sele[1]!=null){
+		let texto="<p>Camino: ";
+		let datos=this.grafo.caminoCorto(this.nodos_sele[0],this.nodos_sele[1],grafo);
+		datos.camino.forEach((nodo)=>{
+			texto+=nodo.valor+" - ";
+		})
+		texto=texto.substring(0,texto.length-3);
+		texto+="</p><p>Peso total: "+datos.peso_total+"</p>";
+		this.content_camino.innerHTML=texto;
+	}
 });
 btn_enlazar.addEventListener("click",()=>{
 	this.opcion=1;
@@ -113,6 +128,7 @@ function modal(op,muestra=-1){ // -1=lo contrario; false=ocultar; true=mostrar
 
 function cargar(){
 	this.eliminar();
+	this.opcion=0;
 	this.texto_file.nodos.forEach((nodo,indice)=>{
 		this.agregar(nodo.valor);
 		this.grafo.nodos[indice].asociacion=nodo.asociacion;
@@ -120,9 +136,9 @@ function cargar(){
 	});
 	this.opcion=1;
 	this.texto_file.aristas.forEach((arista,indice)=>{
-		this.nodos_sele[0]={valor:arista.fila};
-		this.nodos_sele[1]={valor:arista.columna};
-		this.agregar(null,arista.peso,false);
+		this.nodos_sele[0]={valor:arista.fila.valor};
+		this.nodos_sele[1]={valor:arista.columna.valor};
+		this.agregar(null,arista.peso,arista.bidireccional);
 	});
 	this.nodos_sele=[null,null];
 }
@@ -130,6 +146,7 @@ function cargar(){
 function eliminar(){
 	this.deseleccionar();
 	this.content_area.innerHTML="";
+	this.content_camino.innerHTML="";
 	this.valor.value="";
 	this.peso.value="";
 	this.bidireccional.checked=false;
@@ -222,8 +239,8 @@ function agregar(valores,peso=0,bidirecional=null){
 		}));
 		this.mostrar();
 	}else{
-		let fila=this.nodos_sele[0].valor;
-		let columna=this.nodos_sele[1].valor;
+		let fila=this.nodos_sele[0];
+		let columna=this.nodos_sele[1];
 		this.grafo.enlazar(fila,columna,peso,bidirecional);
 		let matriz_fila=0;
 		let matriz_columna=0;
@@ -231,13 +248,13 @@ function agregar(valores,peso=0,bidirecional=null){
 			for(let b=0; b<this.tam_matriz; b++){
 				if(a==0){
 					if(b>0){
-						if(this.matriz[a][b].valor==columna){
+						if(this.matriz[a][b].valor==columna.valor){
 							matriz_columna=b;
 						}
 					}
 				}else{
 					if(b==0){
-						if(this.matriz[a][b].valor==fila){
+						if(this.matriz[a][b].valor==fila.valor){
 							matriz_fila=a;
 						}
 					}
@@ -296,7 +313,7 @@ function mostrar(){
 	for(let a=0; a<this.tam_matriz; a++){
 		contenido+="<tr>";
 		for(let b=0; b<this.tam_matriz; b++){
-			contenido+=`<td id='${a},${b}' title='${this.matriz[a][b].asociacion}' onclick('obtenerDatos(${this.matriz[a][b]})')>${this.matriz[a][b].valor??this.matriz[a][b]}</td>`;
+			contenido+=`<td id='${a},${b}'>${this.matriz[a][b].valor??this.matriz[a][b]}</td>`;
 		}
 		contenido+="</tr>";
 	}
@@ -310,7 +327,8 @@ function obtenerAsociacion(nodo){
 
 function obtenerDatos(nodo){
 	this.content_datos.innerHTML="";
-	(this.grafo.aristas.filter((arista)=>{return arista.fila==nodo.valor;})).forEach((arista)=>{
+	//console.log(this.grafo.adyacentes(nodo));
+	(this.grafo.adyacentes(nodo)??[]).forEach((arista)=>{
 		let lista=document.createElement("li");
 		let eliminar=document.createElement("button");
 		let peso=document.createElement("input");
@@ -318,18 +336,17 @@ function obtenerDatos(nodo){
 		peso.setAttribute("class","caja");
 		peso.value=arista.peso;
 		peso.addEventListener("change",()=>{
-			console.log(peso.value);
-			arista.peso=peso.value;
+			this.grafo.cambiarPeso(arista,peso.value);
 			Almacenamiento.guardar(this.grafo);
 		});
 		eliminar.setAttribute("class","btn");
 		eliminar.innerHTML="Eliminar";
 		eliminar.addEventListener(("click"),()=>{
 			this.grafo.eliminarArista(arista.fila,arista.columna,arista.peso);
-			Almacenamiento.guardar(this.grafo);window.location.reload();
+			Almacenamiento.guardar(this.grafo);
 			window.location.reload();
 		});
-		lista.innerHTML=arista.fila+" - "+arista.columna+" con un peso de ";
+		lista.innerHTML=arista.fila.valor+" - "+arista.columna.valor+" con un peso de ";
 		lista.appendChild(peso);
 		lista.append(eliminar);
 		this.content_datos.appendChild(lista);

@@ -59,6 +59,13 @@
 .content-area legend:hover{
 	text-decoration: underline;
 }
+.content-camino{
+	margin: 10px;
+	font-size: 18px;
+}
+.content-camino p{
+	margin-top: 5px;
+}
 .content-datos{
 	padding: 10px;
 	font-size: 20px;
@@ -66,6 +73,24 @@
 .content-datos li{
 	padding: 5px;
 	box-shadow: 0px 1px #c2c2c2;
+}
+.content-datos .caja{
+	padding: 5px;
+	border: none;
+	font-size: 20px;
+	box-shadow: 0px 1px #c2c2c2;
+	outline: none;
+}
+.content-datos .btn{
+	padding: 5px;
+	background: none;
+	border: 1px solid #c2c2c2;
+	font-size: 17px;
+	transition: 0.1s all ease;
+	cursor: pointer;
+}
+.content-datos .btn:hover{
+	color: #d9331c;
 }
 .content-asociacion{
 	padding: 5px;

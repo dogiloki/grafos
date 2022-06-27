@@ -3,16 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	<title>Grafos</title>
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	<script type="text/javascript" src="Nodo.js"></script>
-	<script type="text/javascript" src="Grafo.js"></script>
-	<script type="text/javascript" src="Almacenamiento.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<script type="text/javascript" src="js/Tabla.js"></script>
+	<script type="text/javascript" src="js/Arista.js"></script>
+	<script type="text/javascript" src="js/Nodo.js"></script>
+	<script type="text/javascript" src="js/Grafo.js"></script>
+	<script type="text/javascript" src="js/Almacenamiento.js"></script>
 </head>
 <body>
 
 	<section class="content-opciones">
 		<li id="btn-agregar">Agregar</li>
 		<li id="btn-enlazar">Enlazar</li>
+		<li id="btn-camino">Camino</li>
 		<li id="btn-eliminar">Eliminar</li>
 		<li id="btn-descargar">Descargar</li>
 		<li class="btn-descargar">
@@ -24,6 +27,8 @@
 	</section>
 
 	<fieldset class="content-area" id="content-area"></fieldset>
+
+	<section class="content-camino" id="content-camino"></section>
 
 	<section class="content-asociacion" id="content-asociacion">
 		<button class='btn' id="btn-eliminar-nodo" style="display: none;"></button>
@@ -47,7 +52,7 @@
 
 	<table class="tabla" id="tabla"></table>
 
-	<script type="text/javascript" src="App.js"></script>
+	<script type="text/javascript" src="js/App.js"></script>
 
 </body>
 </html>

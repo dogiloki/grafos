@@ -4,6 +4,7 @@ class Nodo{
 		this.obj;
 		this.valor;
 		this.asociacion;
+		this.peso=0;
 	}
 
 }
