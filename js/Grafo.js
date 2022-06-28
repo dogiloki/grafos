@@ -6,6 +6,7 @@ class Grafo{
 		this.conta=0;
 	}
 
+	// Agregar un nodo, recibiendo el valor, y lo convierte en Nodo
 	agregar(valor){
 		let nodo=new Nodo();
 		nodo.obj=null;
@@ -16,6 +17,7 @@ class Grafo{
 		return nodo;
 	}
 
+	// Crea un Vértice
 	enlazar(nodo1,nodo2,peso,bidireccional=false){
 		let a=new Arista();
 		a.fila=nodo1;
@@ -25,6 +27,7 @@ class Grafo{
 		this.aristas.push(a);
 	}
 
+	// Eliminar Nodo del grafo
 	eliminarNodo(nodo){
 		this.conta--;
 		// Eliminar nodos adyacentes
@@ -37,6 +40,7 @@ class Grafo{
 		});
 	}
 
+	// Eliminar una arista
 	eliminarArista(fila,columna=null,peso=null){
 		this.aristas=this.aristas.filter((arista,indice)=>{
 			if(columna==null){
@@ -47,6 +51,7 @@ class Grafo{
 		});
 	}
 
+	// Obtiene el peso de una arista
 	cambiarPeso(arista,peso){
 		for(let a=0; a<this.aristas.length; a++){
 			if((this.aristas[a].fila==arista.fila && this.aristas[a].columna==arista.columna) || (this.aristas[a].fila==arista.columna && this.aristas[a].columna==arista.fila)){
@@ -56,6 +61,7 @@ class Grafo{
 		}
 	}
 
+	// Regresar los Nodos adyacentes
 	adyacentes(nodo,nodos_excepciones=null,invertir=true){
 		let nodos=[];
 		(this.aristas).forEach((arista)=>{
@@ -116,6 +122,7 @@ class Grafo{
 		}
 	}*/
 
+	// Crea el algoritmo de Dijkstra
 	generarTabla(nodo_inicial=null, nodos_excepciones=null, tabla=null){
 		if(nodo_inicial==null){
 			nodo_inicial=this.nodos[0];
@@ -200,6 +207,7 @@ class Grafo{
 		}
 	}
 
+	// Obtiene el camino más de un Nodo a otro
 	caminoCorto(nodo_inicio,nodo_fin,grafo){
 		let tabla=this.generarTabla(nodo_fin);
 		let camino=[];

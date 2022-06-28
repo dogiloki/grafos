@@ -85,7 +85,7 @@ btn_camino.addEventListener(("click"),()=>{
 		let texto="<p>Camino: ";
 		let datos=this.grafo.caminoCorto(this.nodos_sele[0],this.nodos_sele[1],grafo);
 		datos.camino.forEach((nodo)=>{
-			texto+=nodo.valor+" - ";
+			texto+=" [ "+nodo.valor+" {"+nodo.asociacion+"} ] ";
 		})
 		texto=texto.substring(0,texto.length-3);
 		texto+="</p><p>Peso total: "+datos.peso_total+"</p>";
@@ -136,8 +136,8 @@ function cargar(){
 	});
 	this.opcion=1;
 	this.texto_file.aristas.forEach((arista,indice)=>{
-		this.nodos_sele[0]={valor:arista.fila.valor};
-		this.nodos_sele[1]={valor:arista.columna.valor};
+		this.nodos_sele[0]=arista.fila;
+		this.nodos_sele[1]=arista.columna;
 		this.agregar(null,arista.peso,arista.bidireccional);
 	});
 	this.nodos_sele=[null,null];
@@ -346,7 +346,7 @@ function obtenerDatos(nodo){
 			Almacenamiento.guardar(this.grafo);
 			window.location.reload();
 		});
-		lista.innerHTML=arista.fila.valor+" - "+arista.columna.valor+" con un peso de ";
+		lista.innerHTML="[ "+arista.fila.valor+" {"+(arista.fila.asociacion??'')+"} ] [ "+arista.columna.valor+" {"+(arista.columna.asociacion??'')+"} ] Peso: ";
 		lista.appendChild(peso);
 		lista.append(eliminar);
 		this.content_datos.appendChild(lista);
