@@ -71,7 +71,7 @@ btn_eliminar_nodo.addEventListener("click",()=>{
 caja_asociacion.addEventListener("change",(evt)=>{
 	if(this.nodo_sele!=null){
 		this.nodo_sele.obj.setAttribute("title",this.caja_asociacion.value);
-		this.nodo_sele.asociacion=this.caja_asociacion.value;
+		this.grafo.cambiarAsociacion(this.nodo_sele,this.caja_asociacion.value);
 		Almacenamiento.guardar(this.grafo);
 	}
 });

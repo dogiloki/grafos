@@ -61,6 +61,24 @@ class Grafo{
 		}
 	}
 
+	// Obtiene asociación del Nodo
+	cambiarAsociacion(nodo,asociacion){
+		for(let a=0; a<this.aristas.length; a++){
+			if(this.aristas[a].fila.valor==nodo.valor){
+				this.aristas[a].fila.asociacion=asociacion;
+			}
+			if(this.aristas[a].columna.valor==nodo.valor){
+				this.aristas[a].columna.asociacion=asociacion;
+			}
+		}
+		for(let a=0; a<this.nodos.length; a++){
+			if(this.nodos[a].valor==nodo.valor){
+				this.nodos[a].asociacion=asociacion;
+				return;
+			}
+		}
+	}
+
 	// Regresar los Nodos adyacentes
 	adyacentes(nodo,nodos_excepciones=null,invertir=true){
 		let nodos=[];
